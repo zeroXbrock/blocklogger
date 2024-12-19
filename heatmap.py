@@ -1,97 +1,3 @@
-# import json
-# import os
-# import matplotlib.pyplot as plt
-
-
-# # Define the types for the data structure
-# class StorageSlotGroup:
-#     def __init__(self, slots: dict[str, str]):
-#         self.slots = slots
-
-
-# class Data:
-#     def __init__(
-#         self,
-#         block_number: int,
-#         tx_hash: str,
-#         storage_slots: list[StorageSlotGroup or None],
-#     ):
-#         self.block_number = block_number
-#         self.tx_hash = tx_hash
-#         self.storage_slots = storage_slots
-
-
-# # Read data from pubUni.json file
-# data_file_path = os.path.join(os.path.dirname(__file__), "pubUni.json")
-# with open(data_file_path, "r") as file:
-#     raw_data = file.read()
-# DATA = json.loads(raw_data)
-
-
-# def count_storage_slot_frequencies(data: list[dict]) -> dict[str, dict[str, int]]:
-#     """
-#     Count the frequency of each unique storage slot in the data and the number of data entries that touch each slot.
-#     """
-#     slot_frequency: dict[str, dict[str, int]] = {}
-
-#     for record_index, record in enumerate(data):
-#         storage_slots = record.get("storageSlots", [])
-#         for slot_group in storage_slots:
-#             if slot_group:  # Skip null entries
-#                 for slot in slot_group:
-#                     if slot not in slot_frequency:
-#                         slot_frequency[slot] = {
-#                             "total_frequency": 0,
-#                             "entries_touched": 0,
-#                         }
-#                     slot_frequency[slot]["total_frequency"] += 1
-#                     slot_frequency[slot]["entries_touched"] += 1
-
-#     return slot_frequency
-
-
-# def plot_bar_graph(slot_frequency: dict[str, dict[str, int]]) -> None:
-#     """
-#     Plot a bar graph of the slot frequencies using Matplotlib.
-#     """
-
-#     # Sort storage slots to ensure consistency in display
-#     unique_slots = sorted(slot_frequency.keys())
-
-#     # Extract the frequencies and entries touched for each slot
-#     total_frequencies = [
-#         slot_frequency[slot]["total_frequency"] for slot in unique_slots
-#     ]
-#     entries_touched = [slot_frequency[slot]["entries_touched"] for slot in unique_slots]
-
-#     # Abbreviate slot labels for better display
-#     abbreviated_labels = [slot[2:8] + "..." + slot[-6:] for slot in unique_slots]
-
-#     x = range(len(unique_slots))
-
-#     plt.figure(figsize=(12, 5))
-
-#     plt.bar(x, total_frequencies, label="Total Frequency", color="orange", alpha=0.7)
-
-#     plt.xlabel("Storage Slot (Abbreviated)")
-#     plt.ylabel("# Times Updated")
-#     plt.title(
-#         "Storage Slot Access Frequency (all contracts) -- Contender UniswapV2 Scenario on Public Unichain Endpoint (blocks 7638184 - 7638199)"
-#     )
-#     plt.xticks(ticks=x, labels=abbreviated_labels, rotation=90, fontfamily="monospace")
-#     plt.legend()
-#     plt.show()
-
-
-# def main() -> None:
-#     slot_frequency = count_storage_slot_frequencies(DATA)
-#     plot_bar_graph(slot_frequency)
-
-
-# if __name__ == "__main__":
-#     main()
-
-
 import json
 import os
 import matplotlib.pyplot as plt
@@ -187,11 +93,6 @@ def plot_heatmap(slot_frequency: dict[str, dict[int, int]]) -> None:
         fontfamily="monospace",
     )
 
-    # plt.yticks(
-    #     ticks=range(len(unique_slots)),
-    #     labels=abbreviated_labels,
-    #     fontfamily="monospace",
-    # )
     plt.xlabel("Block Number")
     plt.ylabel("Storage Slots (Abbreviated)")
     plt.show()
