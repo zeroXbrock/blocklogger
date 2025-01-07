@@ -104,7 +104,7 @@ def plot_heatmap(slot_frequency: dict[str, dict[int, int]]) -> None:
 
 
 def main() -> None:
-    slot_frequency = count_storage_slot_frequencies(DATA)
+    slot_frequency = count_storage_slot_frequencies(DATA.get("txs"))
     plot_heatmap(slot_frequency)
 
 

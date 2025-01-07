@@ -32,7 +32,7 @@ export class BlockReader {
      * @param {number} blockNumber - The block number to retrieve transactions from.
      * @returns {Promise<string[]>} - A list of transaction hashes in the block.
      */
-    async getBlockTransactions(blockNumber: number): Promise<string[]> {
+    async getBlock(blockNumber: number): Promise<any> {
         try {
             const response = await axios.post(this.nodeUrl, {
                 jsonrpc: '2.0',
@@ -43,8 +43,7 @@ export class BlockReader {
                 ],
                 id: 1
             });
-            const blockData = response.data.result;
-            return blockData.transactions.map((tx: any) => tx.hash);
+            return response.data.result;
         } catch (error) {
             console.error(`Error fetching block ${blockNumber}:`, error);
             return [];
@@ -73,14 +72,18 @@ export class BlockReader {
      * @param {number} startBlock - The starting block number.
      * @param {number} endBlock - The ending block number.
      */
-    async processBlocks(startBlock: number, endBlock: number): Promise<{
+    async processBlocks(startBlock: number, endBlock: number): Promise<{txs: {
         blockNumber: number;
         txHash: string;
         storageSlots: (string[] | null)[];
-    }[]> {
-        let blockData = [];
+        receipt: any;
+    }[], blocks: any[]}> {
+        let txs: any[] = [];
+        let blocks: any[] = [];
         for (let blockNumber = startBlock; blockNumber <= endBlock; blockNumber++) {
-            const transactionHashes = await this.getBlockTransactions(blockNumber);
+            const blockData = await this.getBlock(blockNumber);
+            blocks.push(blockData);
+            const transactionHashes = blockData.transactions.map((tx: any) => tx.hash);
             for (const txHash of transactionHashes) {
                 const trace = await this.traceTransaction(txHash);
                 const receipt = await this.getTransactionReceipt(txHash);
@@ -97,7 +100,7 @@ export class BlockReader {
                         storageSlots,
                         receipt,
                     };
-                    blockData.push(
+                    txs.push(
                         data
                     );
                     console.log(data);
@@ -106,7 +109,7 @@ export class BlockReader {
                 }
             }
         }
-        return blockData;
+        return {blocks, txs};
     }
 
 }
