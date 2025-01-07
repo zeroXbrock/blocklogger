@@ -26,4 +26,5 @@ else
     echo "Generating report with existing data ($FILENAME)."
 fi
 
-python heatmap.py $FILENAME
+python py-scripts/heatmap.py $FILENAME
+python py-scripts/gasPerBlock.py $FILENAME
