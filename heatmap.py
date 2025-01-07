@@ -2,6 +2,7 @@ import json
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 
 # Define the types for the data structure
@@ -23,7 +24,11 @@ class Data:
 
 
 # Read data from pubUni.json file
-data_file_path = os.path.join(os.path.dirname(__file__), "pubUni.json")
+if len(sys.argv) < 2:
+    print("Usage: python heatmap.py <data_file_path>")
+    sys.exit(1)
+
+data_file_path = sys.argv[1]
 with open(data_file_path, "r") as file:
     raw_data = file.read()
 DATA = json.loads(raw_data)
