@@ -50,6 +50,9 @@ MARKDOWN_FILE="$REPORT_DIR/report.md"
 echo $MARKDOWN_FILE
 
 echo "# Contender Spam Report" > $MARKDOWN_FILE
+echo "" >> $MARKDOWN_FILE
+echo "*timestamp: $timestamp*" >> $MARKDOWN_FILE
+echo "" >> $MARKDOWN_FILE
 
 for image in "gasPerBlock.png" "heatmap.png" "timeToInclusion.png" "txGasUsage.png"; do
     header=$(echo $image | sed -e 's/.png//' -e 's/\b\(.\)/\u\1/g' -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g')
