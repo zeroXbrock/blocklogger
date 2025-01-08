@@ -4,6 +4,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import plot
 
+if len(sys.argv) < 5:
+    print(
+        "Usage: python timeToInclusion.py <filename> <scenario> <network> <output_filename>"
+    )
+    sys.exit(1)
+filename = sys.argv[1]
+scenario = sys.argv[2]
+network = sys.argv[3]
+output_filename = sys.argv[4]
+
 
 def format_large_number(value):
     """Format large numbers with two decimal points of precision."""
@@ -14,7 +24,7 @@ def format_large_number(value):
     return f"{value:.0f}"
 
 
-def plot_time_to_inclusion_histogram(filename, scenario, network):
+def plot_time_to_inclusion_histogram():
     """Read CSV data from a file and plot a histogram of time-to-inclusion."""
     try:
         # Read the CSV file into a DataFrame
@@ -72,7 +82,7 @@ def plot_time_to_inclusion_histogram(filename, scenario, network):
             title,
             "Time-to-Inclusion (seconds)",
             "Number of Transactions",
-            "output/timeToInclusion.png",
+            output_filename,
         )
 
     except FileNotFoundError:
@@ -84,10 +94,4 @@ def plot_time_to_inclusion_histogram(filename, scenario, network):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Usage: python timeToInclusion.py <filename> <scenario> <network>")
-    else:
-        filename = sys.argv[1]
-        scenario = sys.argv[2]
-        network = sys.argv[3]
-        plot_time_to_inclusion_histogram(filename, scenario, network)
+    plot_time_to_inclusion_histogram()

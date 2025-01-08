@@ -25,13 +25,16 @@ class Data:
 
 
 # Read data from pubUni.json file
-if len(sys.argv) < 4:
-    print("Usage: python heatmap.py <data_file_path> <scenario_name> <network>")
+if len(sys.argv) < 5:
+    print(
+        "Usage: python heatmap.py <data_file_path> <scenario_name> <network> <output_filename>"
+    )
     sys.exit(1)
 
 data_file_path = sys.argv[1]
 scenario_name = sys.argv[2]
 network = sys.argv[3]
+output_filename = sys.argv[4]
 with open(data_file_path, "r") as file:
     raw_data = file.read()
 DATA = json.loads(raw_data)
@@ -119,7 +122,7 @@ def plot_heatmap(slot_frequency: dict[str, dict[int, int]]) -> None:
         title,
         "Block Number",
         "Storage Slots (Abbreviated)",
-        "output/heatmap.png",
+        output_filename,
     )
 
 

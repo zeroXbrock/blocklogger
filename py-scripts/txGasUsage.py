@@ -4,6 +4,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import plot
 
+if len(sys.argv) < 5:
+    print(
+        "Usage: python txGasUsage.py <filename> <scenario> <network> <output_filename>"
+    )
+filename = sys.argv[1]
+scenario = sys.argv[2]
+network = sys.argv[3]
+output_filename = sys.argv[4]
+
 
 def parse_hex_to_int(hex_str):
     """Convert a hexadecimal string to an integer."""
@@ -19,7 +28,7 @@ def format_large_number(value):
     return f"{value:.0f}"
 
 
-def plot_gas_usage_histogram(filename, scenario, network):
+def plot_gas_usage_histogram():
     """Read JSON data from a file and plot a histogram of gas usage."""
     try:
         with open(filename, "r") as file:
@@ -86,7 +95,7 @@ def plot_gas_usage_histogram(filename, scenario, network):
         # Show plot
         plt.grid(axis="y")
         plot.save_plot(
-            plt, title, "Gas Used", "Number of Transactions", "output/txGasUsage.png"
+            plt, title, "Gas Used", "Number of Transactions", output_filename
         )
 
     except FileNotFoundError:
@@ -100,10 +109,4 @@ def plot_gas_usage_histogram(filename, scenario, network):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python txGasUsage.py <filename> <scenario> <network>")
-    else:
-        filename = sys.argv[1]
-        scenario = sys.argv[2]
-        network = sys.argv[3]
-        plot_gas_usage_histogram(filename, scenario, network)
+    plot_gas_usage_histogram()
