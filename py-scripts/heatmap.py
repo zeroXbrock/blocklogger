@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+import plot
 
 
 # Define the types for the data structure
@@ -24,11 +25,14 @@ class Data:
 
 
 # Read data from pubUni.json file
-if len(sys.argv) < 2:
-    print("Usage: python heatmap.py <data_file_path>")
+print(sys.argv)
+if len(sys.argv) < 4:
+    print("Usage: python heatmap.py <data_file_path> <scenario_name> <network>")
     sys.exit(1)
 
 data_file_path = sys.argv[1]
+scenario_name = sys.argv[2]
+network = sys.argv[3]
 with open(data_file_path, "r") as file:
     raw_data = file.read()
 DATA = json.loads(raw_data)
@@ -76,12 +80,14 @@ def plot_heatmap(slot_frequency: dict[str, dict[int, int]]) -> None:
     plt.figure(figsize=(12, 8))
     plt.imshow(heatmap, cmap="hot", interpolation="nearest", aspect="auto")
     plt.colorbar(label="Frequency of Slot Access")
-    plt.title(
-        "Storage Slot Access Frequency (all contracts) -- Contender UniswapV2 Scenario on Public Unichain Endpoint (blocks 7638184 - 7638199)"
-    )
+    # plt.title(
+    #     "Storage Slot Access Frequency (all contracts) -- Contender UniswapV2 Scenario on Public Unichain Endpoint (blocks 7638184 - 7638199)"
+    # )
 
     # Abbreviate slot labels to 6 hex digits
-    abbreviated_labels = [slot[:6] for slot in unique_slots]
+    abbreviated_labels = [
+        str(slot[:6]) + "..." + str(slot[-4:]) for slot in unique_slots
+    ]
 
     plt.xticks(
         ticks=range(len(unique_blocks)),
@@ -98,9 +104,27 @@ def plot_heatmap(slot_frequency: dict[str, dict[int, int]]) -> None:
         fontfamily="monospace",
     )
 
-    plt.xlabel("Block Number")
-    plt.ylabel("Storage Slots (Abbreviated)")
-    plt.show()
+    # plt.xlabel("Block Number")
+    # plt.ylabel("Storage Slots (Abbreviated)")
+    # plt.savefig("output/heatmap.png", bbox_inches="tight", pad_inches=0.1)
+    title = (
+        "Storage Slot Access Frequency (all contracts) -- "
+        + scenario_name
+        + " Scenario on "
+        + network
+        + " (blocks "
+        + str(min(unique_blocks))
+        + "-"
+        + str(max(unique_blocks))
+        + ")"
+    )
+    plot.save_plot(
+        plt,
+        title,
+        "Block Number",
+        "Storage Slots (Abbreviated)",
+        "output/heatmap.png",
+    )
 
 
 def main() -> None:

@@ -1,6 +1,7 @@
 import sys
 import json
 import matplotlib.pyplot as plt
+import plot
 
 
 def parse_hex_to_int(hex_str):
@@ -8,7 +9,7 @@ def parse_hex_to_int(hex_str):
     return int(hex_str, 16)
 
 
-def plot_gas_used_per_block(filename):
+def plot_gas_used_per_block(filename, scenario, network):
     """Read JSON data from a file and plot gasUsed per block number."""
     try:
         with open(filename, "r") as file:
@@ -27,15 +28,23 @@ def plot_gas_used_per_block(filename):
         # Plot the data
         plt.figure(figsize=(10, 6))
         plt.plot(block_numbers, gas_used, marker="o", linestyle="-", label="Gas Used")
-        plt.title("Gas Used Per Block")
-        plt.xlabel("Block Number")
-        plt.ylabel("Gas Used")
+        title = (
+            "Gas Used Per Block - "
+            + scenario_name
+            + " on "
+            + network
+            + " (blocks "
+            + str(min(block_numbers))
+            + "-"
+            + str(max(block_numbers))
+            + ")"
+        )
         plt.xticks(block_numbers, block_numbers, rotation=45, fontsize=8)
         plt.grid(True)
         plt.legend()
         plt.tight_layout()
 
-        plt.show()
+        plot.save_plot(plt, title, "Block Number", "Gas Used", "output/gasPerBlock.png")
 
     except FileNotFoundError:
         print(f"File not found: {filename}")
@@ -48,8 +57,11 @@ def plot_gas_used_per_block(filename):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python gasPerBlock.py <filename>")
+    if len(sys.argv) < 4:
+        print("Usage: python gasPerBlock.py <filename> <scenario_name> <network>")
     else:
         filename = sys.argv[1]
-        plot_gas_used_per_block(filename)
+        scenario_name = sys.argv[2]
+        network = sys.argv[3]
+        print(network)
+        plot_gas_used_per_block(filename, scenario_name, network)

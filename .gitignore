@@ -177,3 +177,6 @@ dist
 
 # app-specific
 storageData.json
+
+*.pyc
+output/
