@@ -26,6 +26,11 @@ else
     echo "Generating report with existing data ($FILENAME)."
 fi
 
+# these can be run with the data from the TS script
 python py-scripts/heatmap.py $FILENAME
 python py-scripts/gasPerBlock.py $FILENAME
 python py-scripts/txGasUsage.py $FILENAME
+
+# this one needs a contender report
+contender report
+python py-scripts/timeToInclusion.py $HOME/.contender/report.csv
