@@ -31,7 +31,7 @@ def plot_gas_used_per_block(filename, scenario, network):
         title = (
             "Gas Used Per Block - "
             + scenario_name
-            + " on "
+            + " Scenario on "
             + network
             + " (blocks "
             + str(min(block_numbers))
@@ -63,5 +63,4 @@ if __name__ == "__main__":
         filename = sys.argv[1]
         scenario_name = sys.argv[2]
         network = sys.argv[3]
-        print(network)
         plot_gas_used_per_block(filename, scenario_name, network)

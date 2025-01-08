@@ -25,7 +25,6 @@ class Data:
 
 
 # Read data from pubUni.json file
-print(sys.argv)
 if len(sys.argv) < 4:
     print("Usage: python heatmap.py <data_file_path> <scenario_name> <network>")
     sys.exit(1)
@@ -80,9 +79,6 @@ def plot_heatmap(slot_frequency: dict[str, dict[int, int]]) -> None:
     plt.figure(figsize=(12, 8))
     plt.imshow(heatmap, cmap="hot", interpolation="nearest", aspect="auto")
     plt.colorbar(label="Frequency of Slot Access")
-    # plt.title(
-    #     "Storage Slot Access Frequency (all contracts) -- Contender UniswapV2 Scenario on Public Unichain Endpoint (blocks 7638184 - 7638199)"
-    # )
 
     # Abbreviate slot labels to 6 hex digits
     abbreviated_labels = [

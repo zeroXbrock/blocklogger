@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import plot
 
 
 def format_large_number(value):
@@ -13,7 +14,7 @@ def format_large_number(value):
     return f"{value:.0f}"
 
 
-def plot_time_to_inclusion_histogram(filename):
+def plot_time_to_inclusion_histogram(filename, scenario, network):
     """Read CSV data from a file and plot a histogram of time-to-inclusion."""
     try:
         # Read the CSV file into a DataFrame
@@ -28,6 +29,8 @@ def plot_time_to_inclusion_histogram(filename):
 
         # Calculate time-to-inclusion
         data["time_to_inclusion"] = data["end_time"] - data["start_time"]
+        min_block = data["block_number"].min()
+        max_block = data["block_number"].max()
 
         # Define histogram bins (increments of 1 second)
         max_time = data["time_to_inclusion"].max()
@@ -43,11 +46,6 @@ def plot_time_to_inclusion_histogram(filename):
             alpha=0.7,
         )
 
-        # Add labels and title
-        plt.title("Time-to-Inclusion Histogram")
-        plt.xlabel("Time-to-Inclusion (seconds)")
-        plt.ylabel("Number of Transactions")
-
         # Customize X-axis ticks
         labels = [
             format_large_number(bin_edge) if i % 2 == 0 else ""
@@ -55,10 +53,27 @@ def plot_time_to_inclusion_histogram(filename):
         ]
         plt.xticks(ticks=bins, labels=labels)
         plt.tight_layout()
-
-        # Show plot
         plt.grid(axis="y")
-        plt.show()
+
+        title = (
+            "Time-to-Inclusion Histogram - "
+            + scenario
+            + " Scenario on "
+            + network
+            + " (blocks "
+            + str(min_block)
+            + "-"
+            + str(max_block)
+            + ")"
+        )
+
+        plot.save_plot(
+            plt,
+            title,
+            "Time-to-Inclusion (seconds)",
+            "Number of Transactions",
+            "output/timeToInclusion.png",
+        )
 
     except FileNotFoundError:
         print(f"File not found: {filename}")
@@ -69,8 +84,10 @@ def plot_time_to_inclusion_histogram(filename):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <filename>")
+    if len(sys.argv) < 4:
+        print("Usage: python timeToInclusion.py <filename> <scenario> <network>")
     else:
         filename = sys.argv[1]
-        plot_time_to_inclusion_histogram(filename)
+        scenario = sys.argv[2]
+        network = sys.argv[3]
+        plot_time_to_inclusion_histogram(filename, scenario, network)
