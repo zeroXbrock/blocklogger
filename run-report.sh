@@ -28,3 +28,4 @@ fi
 
 python py-scripts/heatmap.py $FILENAME
 python py-scripts/gasPerBlock.py $FILENAME
+python py-scripts/txGasUsage.py $FILENAME
