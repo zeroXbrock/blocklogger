@@ -33,7 +33,6 @@ mkdir -p output
 
 # these can be run with the data from the TS script
 python py-scripts/heatmap.py $FILENAME $SCENARIO $RPC_URL
-echo $FILENAME $SCENARIO $RPC_URL
 python py-scripts/gasPerBlock.py $FILENAME $SCENARIO $RPC_URL
 python py-scripts/txGasUsage.py $FILENAME $SCENARIO $RPC_URL
 
