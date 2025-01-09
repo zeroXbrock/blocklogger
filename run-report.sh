@@ -59,6 +59,9 @@ echo "" >> $MARKDOWN_FILE
 
 echo "***Scenario:** $SCENARIO*" >> $MARKDOWN_FILE
 echo "" >> $MARKDOWN_FILE
+echo '<img src="../../flashbots_logo_dark.svg" style="width: 20%; height: auto;" />' >> $MARKDOWN_FILE
+echo '<div style="page-break-after: always;"></div>' >> $MARKDOWN_FILE
+echo "" >> $MARKDOWN_FILE
 
 echo "## Reports" >> $MARKDOWN_FILE
 
