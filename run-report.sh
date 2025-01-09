@@ -60,17 +60,17 @@ echo "" >> $MARKDOWN_FILE
 echo "***Scenario:** $SCENARIO*" >> $MARKDOWN_FILE
 echo "" >> $MARKDOWN_FILE
 
-echo "## Report Summaries" >> $MARKDOWN_FILE
+echo "## Reports" >> $MARKDOWN_FILE
 
 count=0
-for image in "gasPerBlock.png" "heatmap.png" "timeToInclusion.png" "txGasUsage.png"; do
+images=("gasPerBlock.png" "heatmap.png" "timeToInclusion.png" "txGasUsage.png")
+for image in "${images[@]}"; do
     header=$(echo $image | sed -e 's/.png//' -e 's/\b\(.\)/\u\1/g' -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g')
     echo "### $header" >> $MARKDOWN_FILE
     echo "" >> $MARKDOWN_FILE
     echo "![$header](./$image)" >> $MARKDOWN_FILE
     echo "" >> $MARKDOWN_FILE
     count=$((count+1))
-    images=("gasPerBlock.png" "heatmap.png" "timeToInclusion.png" "txGasUsage.png")
     if [ $count -lt ${#images[@]} ]; then
         echo '<div style="page-break-after: always;"></div>' >> $MARKDOWN_FILE
         echo "" >> $MARKDOWN_FILE
