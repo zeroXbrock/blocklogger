@@ -54,7 +54,7 @@ echo "" >> $MARKDOWN_FILE
 echo "## Summary" >> $MARKDOWN_FILE
 echo "" >> $MARKDOWN_FILE
 
-echo "*$(date +"%B %d, %Y")*" >> $MARKDOWN_FILE
+echo "***Date:** $(date +"%B %d, %Y")*" >> $MARKDOWN_FILE
 echo "" >> $MARKDOWN_FILE
 
 echo "***Scenario:** $SCENARIO*" >> $MARKDOWN_FILE
