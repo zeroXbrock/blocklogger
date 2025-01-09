@@ -47,18 +47,34 @@ python py-scripts/timeToInclusion.py $HOME/.contender/report.csv "$SCENARIO" $RP
 
 # Generate markdown file with image links
 MARKDOWN_FILE="$REPORT_DIR/report.md"
-echo $MARKDOWN_FILE
 
-echo "# Contender Spam Report" > $MARKDOWN_FILE
-echo "" >> $MARKDOWN_FILE
-echo "*timestamp: $timestamp*" >> $MARKDOWN_FILE
+echo "# Flashbots Chain Performance Report" > $MARKDOWN_FILE
 echo "" >> $MARKDOWN_FILE
 
+echo "## Summary" >> $MARKDOWN_FILE
+echo "" >> $MARKDOWN_FILE
+
+echo "*$(date +"%B %d, %Y")*" >> $MARKDOWN_FILE
+echo "" >> $MARKDOWN_FILE
+
+echo "***Scenario:** $SCENARIO*" >> $MARKDOWN_FILE
+echo "" >> $MARKDOWN_FILE
+
+echo "## Report Summaries" >> $MARKDOWN_FILE
+
+count=0
 for image in "gasPerBlock.png" "heatmap.png" "timeToInclusion.png" "txGasUsage.png"; do
     header=$(echo $image | sed -e 's/.png//' -e 's/\b\(.\)/\u\1/g' -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g')
-    echo "## $header" >> $MARKDOWN_FILE
+    echo "### $header" >> $MARKDOWN_FILE
+    echo "" >> $MARKDOWN_FILE
     echo "![$header](./$image)" >> $MARKDOWN_FILE
     echo "" >> $MARKDOWN_FILE
+    count=$((count+1))
+    images=("gasPerBlock.png" "heatmap.png" "timeToInclusion.png" "txGasUsage.png")
+    if [ $count -lt ${#images[@]} ]; then
+        echo '<div style="page-break-after: always;"></div>' >> $MARKDOWN_FILE
+        echo "" >> $MARKDOWN_FILE
+    fi
 done
 
-echo "Markdown file $MARKDOWN_FILE generated with image links."
+echo "Markdown file '"$MARKDOWN_FILE"' generated with image links."
